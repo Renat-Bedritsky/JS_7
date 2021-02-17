@@ -1,4 +1,4 @@
-// Калькулятор
+// Калькулятор. Показ результата расчёта
 
 let Calc = function() {
     this.get = function() {
@@ -55,8 +55,6 @@ let Calc = function() {
 let calc = new Calc();
 calc.get();
 
-// Вроде работает...
-
 
 // Лампочка. Расчёт затрат на электроэнергию
 
@@ -85,7 +83,7 @@ let Lamp = function() {
         }
 
         else {
-            ('Лампочка не включена')
+            alert('Лампочка выключена');
         }
     }
 
@@ -137,8 +135,6 @@ let Lamp = function() {
 let lamp = new Lamp();
 lamp.get();
 
-// Это вроде тоже работает...
-
 
 // Чайник. Расчёт времени закипания воды
 
@@ -177,7 +173,7 @@ let Kettle = function() {
             this.minute = Math.floor(this.volume * 4200 * (100 - this.temperature) / this.power / 60);                 // Количество минут (округление)
             this.second = Math.round(this.volume * 4200 * (100 - this.temperature) / this.power - (this.minute * 60)); // Количество секунд (округление)
 
-            this.result = this.minute + ' минуты ' + this.second + ' секунд';                                               // Итог в минутах и секундах
+            this.result = this.minute + ' минуты ' + this.second + ' секунд';                                          // Итог в минутах и секундах
 
             // 4200 Дж/(кг*C) - удельная теплоёмкость воды
             // 100 - температура кипения воды
@@ -202,4 +198,79 @@ let Kettle = function() {
 let kettle = new Kettle();
 kettle.get();
 
-// Лучше перепроверь...
+
+// Автомобиль. Расчёт пройденных километров
+
+let Car = function() {
+    this.get = function() {
+        model = prompt('Введите марку автомобиля');
+        while(model == Number(model) || model.length < 2) {
+            model = prompt('Корректно введите марку автомобиля');
+        }
+        motor = confirm('Запустить двигатель?');
+
+        if(motor == true) {
+            transmissionOn();
+            function transmissionOn() {
+                transmission = prompt('Положение передачи? (D - вперёд, R - назад, N - Нейтральная)');
+
+                if(transmission === 'D') {
+                    speed = prompt('С какой скоростью вы едите? (км/ч)');
+                    time = prompt('Время поездки? (в минутах)');
+                }
+                else if(transmission === 'R') {
+                    alert('Вы сбили мусорный бак');
+                    transmissionOn();
+                }
+                else if(transmission === 'N') {
+                    alert('Двигатель работает. Передача нейтральная. ' + model + ' стоит на месте');
+                    transmissionOn();
+                }
+                else {
+                    transmissionOn();
+                }
+            }
+            this.operation();
+        }
+        else {
+            alert('Двигатель заглушен. ' + model + ' стоит на месте');
+        }
+    }
+
+    this.operation = function() {
+        if(time >= 60) {                                                       // Вывод в часах, если t >= 60 минут
+            result_Km = Math.floor(speed * (time / 60));                               // Количество Км (округление)
+            result_M = Math.round(speed * time - (result_Km * 60));                    // Количество М (округление)
+
+            time_Hour = Math.floor(time / 60);                                         // Количество часов (округление)
+            time_Min = Math.round(time - (time_Hour * 60));                            // Количество минут (округление)
+
+            result = result_Km + ' километров ' + result_M + ' метров';                // Пройденное растояние
+            result_T = time_Hour + ' часов ' + time_Min + ' минут';                    // Затраченое время в часах и минутах
+        }
+        else {                                                                 // Вывод в минутах, если t < 60
+            if(speed * (time / 60) >= 1) {                                         // Вывод в Км, если проедено >= 1 Км
+                result_Km = Math.floor(speed * (time / 60));                           // Количество Км (округление)
+                result_M = Math.round(speed * time - (result_Km * 60));                // Количество М (округление)
+
+                result = result_Km + ' километров ' + result_M + ' метров';            // Пройденное растояние
+                result_T = time + ' минут';                                            // Затраченое время в минутах
+            }
+            else {                                                                 // Вывод в Км, если проедено < 1 Км
+                result_M = Math.round(speed * (time / 60) * 1000);                     // Количество М (округление)
+
+                result = result_M + ' метров';                                         // Пройденное растояние
+                result_T = time + ' минут';                                            // Затраченое время в минутах
+            }
+        }
+
+        this.show();
+    }
+
+    this.show = function() {
+        alert('За ' + result_T + ' Вы проехали ' + result);
+    }
+}
+
+let car = new Car();
+car.get();
