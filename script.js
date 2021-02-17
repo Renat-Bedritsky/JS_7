@@ -274,3 +274,78 @@ let Car = function() {
 
 let car = new Car();
 car.get();
+
+
+// Контакты. Вывод информации. Не доделано
+
+let allContacts = {name: 'Josip', surname: 'Broz', patronymic: 'Tito', age: 21, phone: '+34 7 56-45-7', email: 'Josip_Broz@gmail.com'};
+
+let Contact = function() {
+    this.get = function() {
+
+        nameOne = prompt('Введите Имя контакта');
+        while(!nameOne.trim() || nameOne == Number(nameOne) || nameOne.length < 2) {
+            nameOne = prompt('Корректно введите Имя контакта');
+        }
+
+        nameTwo = prompt('Введите Фамилию контакта');
+        while(!nameTwo.trim() || nameTwo == Number(nameTwo) || nameTwo.length < 2) {
+            nameTwo = prompt('Корректно введите Фамилию контакта');
+        }
+
+        nameThree = prompt('Введите Отчество контакта');
+        while(!nameThree.trim() || nameThree == Number(nameThree) || nameThree.length < 2) {
+            nameThree = prompt('Корректно введите Отчество контакта');
+        }
+
+        age = prompt('Введите возраст контакта');
+        while(!age.trim() || !Number.isInteger(Number(age)) || age < 18) {
+            age = prompt('Корректно введите возраст контакта');
+        }
+        let regexp_5 = /[+]{1}[0-9]{1,3}[ ]{1}[0-9]{1,3}[ ]{1}[0-9]{2,3}[ -]{1}[0-9]{2,3}[ -]{1}[0-9]{2,3}/;
+
+        function check_5() {
+            phone = prompt('Введите номер в фомате: +(код страны) (код города) (xx-xx-xx)');
+            if(regexp_5.test(phone) == false) {
+                alert('Неверный формат!');
+                check_5();
+            };
+        }
+        check_5();
+
+        let regexp_6 = /^[a-z]{1}[a-z0-9]{2,20}@[a-z._-]{2,10}.[a-z]{2,11}$/i;
+
+        function check_6() {
+            email = prompt('Введите email в формате: John@mail.en');
+            if(regexp_6.test(email) == false) {
+                alert('Неверный формат!');
+                check_6();
+            }
+        }
+        check_6();
+
+        this.show();
+    }
+
+    this.show = function() {
+
+        allContacts.name = nameOne;
+        allContacts.surname = nameTwo;
+        allContacts.patronymic = nameThree;
+        allContacts.age = age;
+        allContacts.phone = phone;
+        allContacts.email = email;
+
+        alert('Вывод в консоле');
+        console.log(allContacts);
+
+        /*newContact = confirm('Добавить ещё контакт?');
+        if(newContact == true) {
+            contact.get();
+        }*/
+
+    }
+}
+
+let contact = new Contact();
+contact.get();
